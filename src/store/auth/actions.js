@@ -1,2 +1,3 @@
-export function someAction (/* context */) {
+export const HandleSetUser = ({ commit, dispatch }, data) => {
+  commit('SetUser', data)
 }

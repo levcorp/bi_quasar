@@ -9,13 +9,17 @@
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
         <q-page class="flex flex-center">
-          <q-form @submit="login" @reset="onReset" class="q-gutter-md"  style="width: 70%">
+          <q-form @submit="handlePostLogin" @reset="onReset" class="q-gutter-md"  style="width: 70%">
             <p class="q-pb-sm text-logo text-center text-h5 text-bold">LEVCORP</p>
-            <q-input  rounded  dense v-model="email" label="Correo Electronico" />
-            <q-input  rounded  dense v-model="password" label="Contraseña" />
-            <q-checkbox keep-color color="bg-theme" v-model="accept" label="Recuerdame"/>
+            <q-input  rounded  dense v-model="auth.email" label="Correo Electronico" type="email" :rules="[val => !!val || 'El campo es requerido']"/>
+            <q-input  rounded  dense v-model="auth.password" label="Contraseña" :type="this.show.password.type" :rules="[val => !!val || 'El campo es requerido']">
+              <template v-slot:append>
+                 <q-btn @click="handleStatePassword" round color="white" text-color="black"  size="xs" :icon="show.password.icon"/>
+              </template>
+            </q-input>
+            <q-checkbox keep-color color="bg-theme" v-model="auth.remember" label="Recuerdame"/>
             <div class="flex flex-center">
-              <q-btn color="white" style="background: #01435b !important;" label="Entrar" type="submit" size="sm" icon="lock"/>
+              <q-btn color="white" style="background: #01435b !important;" label="Entrar" type="submit" size="sm" icon="lock_open"/>
             </div>
           </q-form>
         </q-page>
@@ -28,19 +32,40 @@ export default {
   name: 'PageIndex',
   data () {
     return {
-      email: null,
-      password: null,
-      token: '',
-      accept: false
+      auth: {
+        remember: false,
+        password: null,
+        email: null
+      },
+      show: {
+        password: {
+          state: false,
+          icon: 'eva-eye-off-2-outline',
+          type: 'password'
+        }
+      },
+      user: []
     }
   },
   methods: {
-    onSubmit () {
-      if (this.accept !== true) {
+    handleStatePassword () {
+      if (this.show.password.state) {
+        this.show.password.state = false
+        this.show.password.icon = 'eva-eye-off-2-outline'
+        this.show.password.type = 'password'
+      } else {
+        this.show.password.state = true
+        this.show.password.icon = 'eva-eye-outline'
+        this.show.password.type = 'text'
+      }
+    },
+    handlePostSubmit () {
+      if (this.auth.remember !== true) {
         this.$q.notify({
           color: 'red-5',
           textColor: 'white',
-          icon: 'warning',
+          icon: 'eva-alert-triangle-outline',
+          position: 'top',
           message: 'You need to accept the license and terms first'
         })
       } else {
@@ -48,7 +73,8 @@ export default {
           color: 'green-4',
           textColor: 'white',
           icon: 'cloud_done',
-          message: 'Submitted'
+          message: 'Submitted',
+          position: 'top'
         })
       }
     },
@@ -58,22 +84,29 @@ export default {
       this.age = null
       this.accept = false
     },
-    login () {
-      var app = this
+    handlePostLogin () {
       this.$auth.login({
         data: {
-          email: app.email,
-          password: app.password
+          email: this.auth.email,
+          password: this.auth.password,
+          remember: this.auth.remenber
         },
         rememberMe: true,
-        fetchUser: true
+        fetchUser: false
       }).then(response => {
-        console.log(response.data)
+        this.$auth.fetch().then(response => {
+          this.user = response.data.user
+          this.$store.dispatch('auth/HandleSetUser', response.data.user)
+        })
       }).catch(response => {
-        console.log(response.data)
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'eva-alert-triangle-outline',
+          position: 'top',
+          message: 'El correo electronico y/o la contraseña son incorrectos'
+        })
       })
-
-      this.token = this.$auth.token()
     }
   }
 }
