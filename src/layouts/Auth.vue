@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh Lpr fFf"> <!-- Be sure to play with the Layout demo on docs -->
-     <q-footer elevated class="bg-theme text-center q-pa-sm">
+     <q-footer elevated class="bg-theme text-center q-pa-sm text-caption">
         Copyright © 2019 Levcorp. Todos los derechos reservados.
       </q-footer>
 

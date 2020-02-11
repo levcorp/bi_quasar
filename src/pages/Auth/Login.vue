@@ -1,30 +1,66 @@
 <template>
-    <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 gt-sm">
-        <q-page class="flex flex-center">
-          <lottie-animation
-            path="statics/lottie/4.json"
-        />
-        </q-page>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-        <q-page class="flex flex-center">
-          <q-form @submit="handlePostLogin" @reset="onReset" class="q-gutter-md"  style="width: 70%">
-            <p class="q-pb-sm text-logo text-center text-h5 text-bold">LEVCORP</p>
-            <q-input  rounded  dense v-model="auth.email" label="Correo Electronico" type="email" :rules="[val => !!val || 'El campo es requerido']"/>
-            <q-input  rounded  dense v-model="auth.password" label="Contraseña" :type="this.show.password.type" :rules="[val => !!val || 'El campo es requerido']">
-              <template v-slot:append>
-                 <q-btn @click="handleStatePassword" round color="white" text-color="black"  size="xs" :icon="show.password.icon"/>
-              </template>
-            </q-input>
-            <q-checkbox keep-color color="bg-theme" v-model="auth.remember" label="Recuerdame"/>
-            <div class="flex flex-center">
-              <q-btn color="white" style="background: #01435b !important;" label="Entrar" type="submit" size="sm" icon="lock_open"/>
-            </div>
-          </q-form>
-        </q-page>
-      </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 gt-xs">
+      <q-page class="flex flex-center">
+        <lottie-animation path="statics/lottie/4.json" />
+      </q-page>
     </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
+      <q-page class="flex flex-center">
+        <q-form
+          @submit="handlePostLogin"
+          @reset="onReset"
+          class="q-gutter-md"
+          style="width: 70%"
+        >
+          <p class="q-pb-sm text-logo text-center text-h5 text-bold">LEVCORP</p>
+          <q-input
+            rounded
+            dense
+            v-model="auth.email"
+            label="Correo Electronico"
+            type="email"
+            :rules="[val => !!val || 'El campo es requerido']"
+          />
+          <q-input
+            rounded
+            dense
+            v-model="auth.password"
+            label="Contraseña"
+            :type="this.show.password.type"
+            :rules="[val => !!val || 'El campo es requerido']"
+          >
+            <template v-slot:append>
+              <q-btn
+                @click="handleStatePassword"
+                round
+                color="white"
+                text-color="black"
+                size="xs"
+                :icon="show.password.icon"
+              />
+            </template>
+          </q-input>
+          <q-checkbox
+            keep-color
+            color="bg-theme"
+            v-model="auth.remember"
+            label="Recuerdame"
+          />
+          <div class="flex flex-center">
+            <q-btn
+              color="white"
+              style="background: #01435b !important;"
+              label="Entrar"
+              type="submit"
+              size="sm"
+              icon="lock_open"
+            />
+          </div>
+        </q-form>
+      </q-page>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -92,12 +128,9 @@ export default {
           remember: this.auth.remenber
         },
         rememberMe: true,
-        fetchUser: false
+        fetchUser: true
       }).then(response => {
-        this.$auth.fetch().then(response => {
-          this.user = response.data.user
-          this.$store.dispatch('auth/HandleSetUser', response.data.user)
-        })
+
       }).catch(response => {
         this.$q.notify({
           color: 'red-5',
@@ -112,11 +145,11 @@ export default {
 }
 </script>
 <style lang="css">
-  .text-logo {
-    letter-spacing: 2px;
-    color: #01435b;
-  }
-  .bg-theme {
-    background: #01435b !important;
-  }
+.text-logo {
+  letter-spacing: 2px;
+  color: #01435b;
+}
+.bg-theme {
+  background: #01435b !important;
+}
 </style>

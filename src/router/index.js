@@ -29,11 +29,12 @@ export default function () {
   sync(store(), Router)
   Vue.router = Router
   Vue.use(VueAxios, axios)
-  Vue.axios.defaults.baseURL = 'http://127.0.0.1:8000/api/'
+  Vue.axios.defaults.baseURL = 'http://192.168.10.136/api/'
   Vue.use(auth, {
     auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
     http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
     router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
+    authRedirect: '/',
     registerData: {
       url: 'auth/register',
       method: 'POST',
@@ -42,7 +43,7 @@ export default function () {
     loginData: {
       url: 'auth/login',
       method: 'POST',
-      redirect: '',
+      redirect: '/panel',
       fetchUser: false
     },
     logoutData: {
@@ -62,7 +63,6 @@ export default function () {
       enabled: true,
       interval: 30
     }
-
   })
   return Router
 }

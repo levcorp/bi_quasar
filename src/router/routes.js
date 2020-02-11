@@ -1,17 +1,21 @@
-
 const routes = [
   {
     path: '/',
     component: () => import('layouts/Auth.vue'),
-    children: [
-      { path: '', component: () => import('pages/Auth/Login.vue') }
-    ]
+    children: [{ path: '', component: () => import('pages/Auth/Login.vue') }]
   },
   {
     path: '/panel',
     component: () => import('layouts/Panel.vue'),
+    meta: {
+      auth: undefined
+    },
     children: [
-      { path: '', component: () => import('pages/Panel/Index.vue') }
+      { path: '', component: () => import('pages/Panel/Index.vue') },
+      {
+        path: 'user',
+        component: () => import('pages/Panel/Users/Index.vue')
+      }
     ]
   }
 ]
