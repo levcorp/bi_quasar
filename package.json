@@ -15,7 +15,7 @@
     "@quasar/extras": "^1.0.0",
     "@websanova/vue-auth": "^2.21.15-beta",
     "apexcharts": "^3.11.3",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "i": "^0.3.6",
     "lottie-vuejs": "0.3.6",
     "quasar": "^1.0.0",
